@@ -32,7 +32,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
     // compile("org.grails:gorm-hibernate4-spring-boot:1.1.0.RELEASE")
-	runtime('com.h2database:h2')
+	runtime('com.h2database:h2')	
+    runtime('org.postgresql:postgresql:9.4.1208')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     compile("org.springframework.boot:spring-boot-starter-actuator")
 }
