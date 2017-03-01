@@ -3,6 +3,7 @@ package readinglist
 import geb.Page
 import geb.spock.GebSpec
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 
 class ReadListPage extends Page {
@@ -25,8 +26,7 @@ class ReadListPage extends Page {
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringGebTest extends GebSpec {
 
-
-    @Value('${local.server.port}')
+    @LocalServerPort
     private int port
 
     def setup() {
