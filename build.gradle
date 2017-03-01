@@ -37,5 +37,9 @@ dependencies {
     runtime('org.postgresql:postgresql:9.4.1208')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.spockframework:spock-spring:1.1-groovy-2.4-rc-3')
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+	testCompile('org.gebish:geb-core:1.1.1')
+	testCompile('org.gebish:geb-spock:1.1.1')
+	testCompile('org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0')
+	testCompile('org.seleniumhq.selenium:selenium-support:2.52.0')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
 }
