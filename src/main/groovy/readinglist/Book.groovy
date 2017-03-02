@@ -1,6 +1,11 @@
-package readinglist 
+package readinglist
 
-class Book { 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import groovy.transform.Canonical
+
+@Canonical
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Book {
     Long id 
     String reader 
     String isbn 
