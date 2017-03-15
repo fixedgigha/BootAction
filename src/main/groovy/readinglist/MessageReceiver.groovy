@@ -35,7 +35,18 @@ class MessageReceiver {
     @Bean
     @Profile('heroku')
     ConnectionFactory connectionFactory() {
-      new RMQConnectionFactory()
+        String uri = System.getenv("CLOUDAMQP_URL")
+        if (uri == null) uri = "amqp://guest:guest@localhost"
+        logger.info('Rabbit URI {}', uri)
+        def match = uri =~ /amqp:\/\/(\w+):(\w+)@([^:\/]+)(:\d+)?(\/\w+)?/
+        if (!match.matches()) throw new IllegalArgumentException(uri)
+        def factory = new RMQConnectionFactory()
+        factory.setUsername(match.group(1))
+        factory.setPassword(match.group(2))
+        if (match.group(5)) factory.setVirtualHost(match.group(5).substring(1))
+        factory.setHost(match.group(3))
+        if (match.group(4)) factory.setPort(Integer.parseInt(match.group(4).substring(1)))
+        factory
     }
 
     @Bean // Serialize message content to json using TextMessage
