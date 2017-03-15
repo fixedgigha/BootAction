@@ -1,6 +1,7 @@
 package readinglist
 
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter
+import org.springframework.jms.support.converter.MessageType
 
 import javax.jms.ConnectionFactory
 import org.slf4j.Logger
@@ -10,11 +11,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.jms.annotation.EnableJms
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.jms.listener.SimpleMessageListenerContainer
-import org.springframework.jms.listener.adapter.MessageListenerAdapter
 import org.springframework.jms.support.converter.MessageConverter
 import org.springframework.stereotype.Component
-
-import javax.jms.Queue
 
 @Configuration
 @EnableJms
@@ -36,18 +34,9 @@ class MessageReceiver {
     MessageConverter jacksonMessageConverter() {
         logger.info('Creating converter <<<<')
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter()
-        converter.typeIdMappings = ['book' : Book]
+        converter.typeIdPropertyName = '_type'
+        converter.targetType = MessageType.TEXT
         converter
-    }
-
-
-    @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter adapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer()
-        container.setConnectionFactory(connectionFactory)
-        container.setDestinationName(BOOK_QUEUE)
-        container.setMessageListener(adapter)
-        container
     }
 
 }

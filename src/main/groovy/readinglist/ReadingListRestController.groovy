@@ -33,6 +33,6 @@ class ReadingListRestController {
         logger.info 'Received book {}', book
         book.reader = reader
         readingListRepository.save(book)
-        jmsTemplate.convertAndSend(book)
+        jmsTemplate.convertAndSend(MessageReceiver.BOOK_QUEUE, book)
     }
 }
