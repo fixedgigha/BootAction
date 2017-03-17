@@ -1,5 +1,7 @@
 package readinglist
 
+import org.springframework.jms.listener.DefaultMessageListenerContainer
+import org.springframework.jms.listener.adapter.MessageListenerAdapter
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageType
 
@@ -47,6 +49,18 @@ class MessageReceiver {
         factory.setHost(match.group(3))
         if (match.group(4)) factory.setPort(Integer.parseInt(match.group(4).substring(1)))
         factory
+    }
+
+    @Bean
+    DefaultMessageListenerContainer jmsListener(ConnectionFactory connectionFactory) {
+        def jmsListener = new DefaultMessageListenerContainer()
+        jmsListener.connectionFactory = connectionFactory
+        jmsListener.destinationName = BOOK_QUEUE
+        def listenAdapter = new MessageListenerAdapter(new Receiver())
+        listenAdapter.defaultListenerMethod = 'onMessage'
+        listenAdapter.messageConverter = jacksonMessageConverter()
+        jmsListener.messageListener = listenAdapter
+        jmsListener
     }
 
     @Bean // Serialize message content to json using TextMessage
